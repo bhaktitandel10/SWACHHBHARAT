@@ -1,0 +1,79 @@
+/* Page container */
+.state-container {
+  min-height: 250px;
+    padding: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+/* Header section */
+.state-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #2196f3;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.state-header h3 {
+  margin: 0;
+  color: #2196f3;
+  font-weight: 500;
+}
+
+/* Add state button */
+.add-btn {
+  background-color: #8bc34a;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Table styling */
+.state-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.state-table th {
+  background-color: #e0e0e0;
+  text-align: left;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.state-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+/* Action buttons */
+.edit-btn {
+  background-color: #03a9f4;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: not-allowed;
+}

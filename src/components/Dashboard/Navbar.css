@@ -1,0 +1,40 @@
+.navbar {
+  /* height: 60px;
+  background: #1e73be;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px; */
+
+  /* width: 100%;
+  background: #1e88e5;
+  color: white;
+  padding: 15px 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center; */
+  height: 55px;                  /* 🔥 fixed height */
+  background-color: #1e88e5;
+  color: #fff;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.nav-right ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-right li {
+  margin-left: 30px;
+  cursor: pointer;
+}
