@@ -3,10 +3,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { languageEditFailure,languageEditRequest,languageEditSuccess } from "../../Redux/Action/languageAction";
 function EditLanguage({ langData, setLangData }) {
+  const { user } = useSelector((state) => state.login);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  
   console.log(location, "locations");
 
   // const [languageCode, setlangcode] = useState("");
@@ -34,7 +38,7 @@ function EditLanguage({ langData, setLangData }) {
       languageName: formData.languageName,
       status: formData.status,
     };
-
+dispatch(languageEditRequest());
     axios
       .put(`http://localhost:3001/api/language/${state.Language._id}`, data, {
         headers: {
@@ -42,11 +46,12 @@ function EditLanguage({ langData, setLangData }) {
         },
       })
       .then((res) => {
-        // if (res.data) {
+        dispatch(languageEditSuccess(res.data.data));
         navigate("/LanguageList");
-        // }
+        
       })
       .catch((err) => {
+        dispatch(languageEditFailure(err));
         console.log(err);
         alert("Error while adding language ");
       });

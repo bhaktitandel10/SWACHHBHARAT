@@ -2,16 +2,25 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  stateEditFailure,
+  stateEditRequest,
+  stateEditSuccess,
+} from "../../Redux/Action/stateAction";
+
 
 function Edit({ stateData, setstateData }) {
-  // const { id } = useParams();
+  const { user} = useSelector((state) => state.login);
+  
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+
   const { register, handleSubmit, setValue } = useForm();
   console.log(location, "locations");
 
-  // const [country, setcountry] = useState("");
-  // const [stateTitle, setstateTitle] = useState("");
+ 
 
   useEffect(() => {
     if (location.state) {
@@ -20,8 +29,8 @@ function Edit({ stateData, setstateData }) {
     }
   }, [location.state]);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjk4ZmExMGM5NDY4NGIwNTZjNjhjOCIsInRva2VuIjoiOTljZDUyZGQ4YzJkYjM0MDFkYWQ3M2I4NDcxOWQyYjgiLCJpYXQiOjE2NDAwNjc2OTN9.grdIjn6RZ1xRl2ZFoqqoezPiLmTQDiBfpvAyEWgWSgQ";
+  // const token =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjk4ZmExMGM5NDY4NGIwNTZjNjhjOCIsInRva2VuIjoiOTljZDUyZGQ4YzJkYjM0MDFkYWQ3M2I4NDcxOWQyYjgiLCJpYXQiOjE2NDAwNjc2OTN9.grdIjn6RZ1xRl2ZFoqqoezPiLmTQDiBfpvAyEWgWSgQ";
   const onSubmit = (formData) => {
     // e.preventDefault();
 
@@ -30,30 +39,26 @@ function Edit({ stateData, setstateData }) {
       country: formData.country,
       stateTitle: formData.stateTitle,
     };
-    // let results = stateData?.map((item) => {
-    //   if (item.id === location.state.id) {
-    //     return data;
-    //   }
-    //   return item;
-    // });
+   dispatch(stateEditRequest());
     axios
       .put(`http://localhost:3001/api/state/${location.state._id}`, data, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user}`,
         },
       })
       .then((res) => {
         if (res.data) {
+          dispatch(stateEditSuccess(res.data.data));
           navigate("/Statelist");
         }
       })
       .catch((err) => {
+         dispatch(stateEditFailure(err));
         console.log(err);
         alert("Error while adding state ");
       });
 
-    // setstateData(results);
-    // navigate("/Statelist");
+    
   };
 
   return (
@@ -63,8 +68,7 @@ function Edit({ stateData, setstateData }) {
         <input
           placeholder="country"
           {...register("country")}
-          // value={country}
-          // onChange={(e) => setcountry(e.target.value)}
+         
         />
         <br />
         <br />
@@ -72,8 +76,7 @@ function Edit({ stateData, setstateData }) {
         <input
           placeholder="State Name"
           {...register("stateTitle")}
-          // value={stateTitle}
-          // onChange={(e) => setstateTitle(e.target.value)}
+          
         />
         <br />
         <br />

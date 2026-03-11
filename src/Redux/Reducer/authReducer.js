@@ -1,44 +1,46 @@
 import { authActionTypes } from "../Constant/authConstant";
 
-const initialState={
-  loading:false,
-  loginStatus:false,
-  logoutStatus:true,
-}
+const initialState = {
+  loading: false,
+  loginStatus: false,
+  user: null,
+  error: null,
+};
 
-const authReducer=(state=initialState,action)=>{
-  switch(action.type){
+const authReducer = (state = initialState, action) => {
+  switch (action.type) {
     case authActionTypes.LOGIN_REQUEST:
-      return{
+      return {
         ...state,
-        loading:true,
+        loading: true,
       };
+
     case authActionTypes.LOGIN_REQUEST_SUCESS:
-      return{
+      return {
         ...state,
-        loginStatus:action.payload,
-        logoutStatus:false,
-        loading:false
+        loading: false,
+        loginStatus: true,   // ⭐ VERY IMPORTANT
+        user: action.payload,
       };
+
     case authActionTypes.LOGIN_REQUEST_FAIL:
       return {
         ...state,
-        loginStatus: false,
-        logoutStatus: true,
         loading: false,
+        loginStatus: false,
+        error: action.payload,
       };
-
-    case authActionTypes.LOGOUT_REQUEST:
-      return { ...state, loading: true };
 
     case authActionTypes.LOGOUT_REQUEST_SUCESS:
       return {
         ...state,
         loginStatus: false,
-        logoutStatus: true,
-        loading: false,
+        user: null,
       };
+
     default:
       return state;
   }
-}
+};
+
+export default authReducer;

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { languageAddFailure,languageAddSuccess,languageAddRequest } from "../../Redux/Action/languageAction";
 
 const AddLanguage = ({ langData, setLangData }) => {
   // const [languageCode, setlangcode] = useState("");
@@ -9,11 +11,12 @@ const AddLanguage = ({ langData, setLangData }) => {
   // const [status, setlangStatus] = useState("");
 
   const { register, handleSubmit } = useForm();
-
+  const { user } = useSelector((state) => state.login);
   const navigate = useNavigate();
+   const dispatch = useDispatch();
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjk4ZmExMGM5NDY4NGIwNTZjNjhjOCIsInRva2VuIjoiOTljZDUyZGQ4YzJkYjM0MDFkYWQ3M2I4NDcxOWQyYjgiLCJpYXQiOjE2NDAwNjc2OTN9.grdIjn6RZ1xRl2ZFoqqoezPiLmTQDiBfpvAyEWgWSgQ";
+  // const token =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjk4ZmExMGM5NDY4NGIwNTZjNjhjOCIsInRva2VuIjoiOTljZDUyZGQ4YzJkYjM0MDFkYWQ3M2I4NDcxOWQyYjgiLCJpYXQiOjE2NDAwNjc2OTN9.grdIjn6RZ1xRl2ZFoqqoezPiLmTQDiBfpvAyEWgWSgQ";
   const onSubmit = (formData) => {
     // e.preventDefault();
 
@@ -22,20 +25,22 @@ const AddLanguage = ({ langData, setLangData }) => {
       languageName: formData.languageName,
       status: formData.status,
     };
-
+     dispatch(languageAddRequest());
     axios
       .post("http://localhost:3001/api/language/", data, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user}`,
         },
       })
       .then((res) => {
+        dispatch(languageAddSuccess(res.data.data));
         alert("Lang added successfully ");
         // if (res.data) {
         navigate("/LanguageList");
         // }
       })
       .catch((err) => {
+        dispatch(languageAddFailure(err))
         console.log(err);
         alert("Error while adding lang ");
       });
@@ -47,8 +52,7 @@ const AddLanguage = ({ langData, setLangData }) => {
       <input
         placeholder="-Select Language code-"
         {...register("languageCode")}
-        // value={languageCode}
-        // onChange={(e) => setlangcode(e.target.value)}
+        
       />
       <br />
       <br />
@@ -58,8 +62,7 @@ const AddLanguage = ({ langData, setLangData }) => {
         placeholder="Language Name"
         {...register("languageName")}
 
-        // value={languageName}
-        // onChange={(e) => setlangName(e.target.value)}
+        
       />
       <br />
       <br />

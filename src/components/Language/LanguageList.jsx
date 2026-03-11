@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { languageListFailure, languageListRequest,languageListSuccess } from "../../Redux/Action/languageAction";
 
 const LanguageList = () => {
+   const dispatch = useDispatch();
   const [langData, setLangData] = useState([]);
   const [product, setProduct] = useState(langData);
 
@@ -27,19 +30,11 @@ const LanguageList = () => {
     setProduct(filterBySearch);
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3001/api/language/?page=1&size=10")
-  //     .then((res) => {
-  //       setLangData(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxYjk4ZmExMGM5NDY4NGIwNTZjNjhjOCIsInRva2VuIjoiOTljZDUyZGQ4YzJkYjM0MDFkYWQ3M2I4NDcxOWQyYjgiLCJpYXQiOjE2NDAwNjc2OTN9.grdIjn6RZ1xRl2ZFoqqoezPiLmTQDiBfpvAyEWgWSgQ";
   useEffect(() => {
+     dispatch(languageListRequest());
     axios
       .get("http://localhost:3001/api/language/?page=1&size=10", {
         headers: {
@@ -47,10 +42,12 @@ const LanguageList = () => {
         },
       })
       .then((res) => {
+        dispatch(languageListSuccess(res.data.data));
         setLangData(res.data.data);
         setProduct(res.data.data);
       })
       .catch((err) => {
+        dispatch(languageListFailure(err));
         console.log(err);
       });
   }, []);

@@ -9,11 +9,10 @@ import {
   loginRequestAction,
   loginRequestFail,
   loginRequestSucess,
-} from "./Redux/Action/authAction";
+} from "../Redux/Action/authAction";
 
 const Login = () => {
-
-  const{register,handleSubmit}=useForm();
+  const { register, handleSubmit } = useForm();
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -31,16 +30,15 @@ const Login = () => {
       .then((res) => {
         console.log(res, "res");
         if (res.data.status === 200) {
-          navigate("/Dashboard");
-           dispatch(loginRequestSucess(res.data.data));
+          
+          dispatch(loginRequestSucess(res.data.data));
+          navigate("/dashboard");
         }
       })
       .catch((err) => {
         dispatch(loginRequestFail(err));
         console.log(err, "err");
       });
-
-    
   };
   return (
     <div className="login-wrapper">
@@ -51,7 +49,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <input
-              type="text"  
+              type="text"
               placeholder="E-mail Address"
               {...register("email")}
               // value={email}
@@ -60,7 +58,6 @@ const Login = () => {
           </div>
           <div>
             <input
-
               type="password"
               placeholder="password"
               {...register("password")}

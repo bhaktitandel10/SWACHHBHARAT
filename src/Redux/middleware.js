@@ -1,13 +1,11 @@
 import { thunk } from "redux-thunk";
+import { createLogger } from "redux-logger";
+import invariant from "redux-immutable-state-invariant";
 
 const middleware = [thunk];
 
-if (process.env.NODE_ENV === "development") {
-  const { createLogger } = require("redux-logger");
-  if (process.env.NODE_ENV === "development") {
-    const invariant = require("redux-immutable-state-invariant").default;
-    middleware.push(invariant());
-  }
+if (import.meta.env.DEV) {
+  middleware.push(invariant());
   middleware.push(createLogger({ collapsed: true }));
 }
 

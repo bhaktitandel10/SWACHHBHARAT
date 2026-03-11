@@ -3,10 +3,17 @@ import "./StateList.css";
 // import AddState from "./AddState";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  stateListFailure,
+  stateListRequest,
+  stateListSuccess
+} from "../../Redux/Action/stateAction";
 
 const StateList = () => {
   const [stateData, setstateData] = useState([]);
   const [product, setProduct] = useState(stateData);
+  const dispatch = useDispatch();
 
   function handleSearchClick(e) {
     if (e.target.value === "") {
@@ -25,13 +32,16 @@ const StateList = () => {
   }
 
   useEffect(() => {
+    dispatch(stateListRequest());
     axios
       .get("http://localhost:3001/api/noAuth/state/?page=1&size=100")
       .then((res) => {
+        dispatch(stateListSuccess(res.data.data));
         setstateData(res.data.data);
         setProduct(res.data.data);
       })
       .catch((err) => {
+        dispatch(stateListFailure(err));
         console.log(err);
       });
   }, []);
@@ -41,7 +51,7 @@ const StateList = () => {
       .put(`http://localhost:3001/api/delete/${_id}`)
       .then((res) => {
         console.log(res, "res");
-        setpledgeData(res.data.data);
+        setProduct(res.data.data);
       })
       .catch((err) => {
         console.log(err, "err");
